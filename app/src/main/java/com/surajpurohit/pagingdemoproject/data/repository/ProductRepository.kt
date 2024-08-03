@@ -12,7 +12,7 @@ class ProductRepository {
 
     fun getProducts() = Pager(
         config = PagingConfig(
-            pageSize = 5,
+            pageSize = 10,
             prefetchDistance = 1,
             enablePlaceholders = false
         ),

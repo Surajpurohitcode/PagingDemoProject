@@ -17,10 +17,10 @@ class ProductAdapter(val context: Context) :
     override fun onBindViewHolder(holder: ProductAdapter.ViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            Glide.with(context).load(item.image).into(holder.binding.productImage)
-            holder.binding.productTitle.setText(item.title)
+            //Glide.with(context).load(item.image).into(holder.binding.productImage)
+            holder.binding.productTitle.setText(item.name)
             holder.binding.productPrice.setText("₹ ${item.price}")
-            holder.binding.productRating.setText("${item.rate}")
+            //holder.binding.productRating.setText("${item.rate}")
         }
     }
 

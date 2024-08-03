@@ -9,6 +9,8 @@ class ProductPagingSource(
     private val apiService: ApiService
 ) : PagingSource<Int, Product>() {
 
+    private val seenIds = HashSet<Int>()
+
     override fun getRefreshKey(state: PagingState<Int, Product>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
@@ -19,17 +21,18 @@ class ProductPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Product> {
         val position = params.key ?: 1
         return try {
-
             val response = apiService.getProducts(position, params.loadSize)
-            val products = response.distinctBy { it.id }
 
+            // Flatten the list of items across pages and remove duplicates by ID
+            val products = response.pages.flatMap { it.items }
+                .distinctBy { it.id }
+                .filter { seenIds.add(it.id) } // Only add new IDs
 
-            val nextKey = if (products.isEmpty() && position == 1 || products.size < params.loadSize) {
+            val nextKey = if (products.isEmpty() || products.size < params.loadSize) {
                 null // No more data available, set nextKey to null
             } else {
                 position + 1 // More data available, increment nextKey
             }
-
 
             val prevKey = if (position == 1) null else position - 1
 
@@ -43,8 +46,3 @@ class ProductPagingSource(
         }
     }
 }
-
-
-
-
-
