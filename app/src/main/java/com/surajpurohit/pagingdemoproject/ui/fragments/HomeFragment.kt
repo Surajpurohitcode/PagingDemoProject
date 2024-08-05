@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.surajpurohit.pagingdemoproject.data.adapter.ProductAdapter
 import com.surajpurohit.pagingdemoproject.data.adapter.ProductLoadStateAdapter
 import com.surajpurohit.pagingdemoproject.data.model.ProductViewModel
@@ -36,7 +37,7 @@ class HomeFragment : Fragment() {
 
         viewModel =
             ViewModelProvider(requireActivity(), viewModelFactory).get(ProductViewModel::class.java)
-        binding.productRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.productRecyclerView.layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
 
         productAdapter = ProductAdapter(requireContext())
 
